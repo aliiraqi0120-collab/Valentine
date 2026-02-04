@@ -13,7 +13,6 @@ body {
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     font-family: Arial, sans-serif;
     overflow: hidden;
-    position: relative;
 }
 
 .container {
@@ -23,13 +22,26 @@ body {
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     position: relative;
-    width: 300px;
+    width: 320px;
 }
 
 h1 {
     color: #ff4d6d;
-    margin-bottom: 60px;
-    position: relative;
+    margin-bottom: 10px;
+}
+
+/* Message under the question */
+#message {
+    font-size: 22px;
+    color: black;
+    margin-top: 10px;
+    display: none;
+    animation: fadeIn 0.8s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 button {
@@ -38,7 +50,7 @@ button {
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    margin: 10px;
+    margin: 15px 10px;
     position: absolute;
 }
 
@@ -53,7 +65,7 @@ button {
 #noBtn {
     background: #ccc;
     left: 50%;
-    top: 50px; /* start just below the text */
+    top: 80px;
     transform: translateX(-50%);
 }
 
@@ -67,72 +79,48 @@ button {
     0% { transform: translateY(0) scale(1); opacity: 1; }
     100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
 }
-
-#message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 40px;
-    color: #ff4d6d;
-    text-align: center;
-    display: none;
-    animation: fadeIn 1s forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, -60%) scale(0.8); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
 </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Will you be my Valentine? 💖</h1>
+    <div id="message">Ali is grateful for you 🔪</div>
     <button id="yesBtn">Yes ❤️</button>
     <button id="noBtn">No 🙃</button>
 </div>
-
-<div id="message">Ali is so grateful for you ❤️</div>
 
 <script>
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const message = document.getElementById("message");
 const container = document.querySelector(".container");
+
 let noClickCount = 0;
 
-// No button only reacts on click
-noBtn.addEventListener("click", moveNo);
-
-function moveNo() {
+// No button moves ONLY on click, disappears after 20 clicks
+noBtn.addEventListener("click", () => {
     noClickCount++;
 
-    // Only disappear after 20 clicks
     if (noClickCount >= 20) {
         noBtn.style.display = "none";
         return;
     }
 
-    // Move No button randomly around the top part of the container (near the text)
     const maxX = container.offsetWidth - noBtn.offsetWidth;
-    const minX = 0;
+    const maxY = 60;
 
-    const minY = 0;  // near the text
-    const maxY = 60; // small vertical range
-
-    const x = minX + Math.random() * maxX;
-    const y = minY + Math.random() * maxY;
+    const x = Math.random() * maxX;
+    const y = 60 + Math.random() * maxY;
 
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
-}
+});
 
-// Yes button triggers hearts + big message
+// Yes button → show message + hearts
 yesBtn.addEventListener("click", () => {
-    for (let i = 0; i < 30; i++) createHeart();
     message.style.display = "block";
+    for (let i = 0; i < 30; i++) createHeart();
 });
 
 function createHeart() {
