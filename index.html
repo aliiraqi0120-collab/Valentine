@@ -4,82 +4,86 @@
 <meta charset="UTF-8">
 <title>Be My Valentine ❤️</title>
 <style>
-    body {
-        height: 100vh;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-        position: relative;
-    }
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    position: relative;
+}
 
-    .container {
-        text-align: center;
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        position: relative;
-    }
+.container {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+    width: 300px;
+}
 
-    h1 {
-        color: #ff4d6d;
-        margin-bottom: 30px;
-    }
+h1 {
+    color: #ff4d6d;
+    margin-bottom: 30px;
+    position: relative;
+}
 
-    button {
-        font-size: 18px;
-        padding: 12px 30px;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        margin: 10px;
-        position: relative;
-    }
+button {
+    font-size: 18px;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 10px;
+    position: absolute;
+}
 
-    #yesBtn {
-        background: #ff4d6d;
-        color: white;
-    }
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+}
 
-    #noBtn {
-        background: #ccc;
-        position: absolute;
-        left: 50%;
-        top: 70%;
-        transform: translate(-50%, -50%);
-    }
+#noBtn {
+    background: #ccc;
+    left: 50%;
+    top: 50px; /* start just below the text */
+    transform: translateX(-50%);
+}
 
-    .heart {
-        position: absolute;
-        font-size: 30px;
-        animation: float 3s ease-in forwards;
-    }
+.heart {
+    position: absolute;
+    font-size: 30px;
+    animation: float 3s ease-in forwards;
+}
 
-    @keyframes float {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
-    }
+@keyframes float {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+}
 
-    #message {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 40px;
-        color: #ff4d6d;
-        text-align: center;
-        display: none;
-        animation: fadeIn 1s forwards;
-    }
+#message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: #ff4d6d;
+    text-align: center;
+    display: none;
+    animation: fadeIn 1s forwards;
+}
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translate(-50%, -60%) scale(0.8); }
-        to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%) scale(0.8); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
 </style>
 </head>
 <body>
@@ -96,33 +100,33 @@
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const message = document.getElementById("message");
+const container = document.querySelector(".container");
 let noClickCount = 0;
 
-// Move the No button on hover or click
+// Move No button on hover or click
 noBtn.addEventListener("mouseover", moveNo);
 noBtn.addEventListener("click", moveNo);
 
 function moveNo() {
     noClickCount++;
-    // Only disappear after 20 clicks
     if (noClickCount >= 20) {
         noBtn.style.display = "none";
         return;
     }
-    // Random position on the screen
-    const containerRect = document.body.getBoundingClientRect();
-    const btnWidth = noBtn.offsetWidth;
-    const btnHeight = noBtn.offsetHeight;
 
-    // Keep the button fully inside viewport
-    const x = Math.random() * (containerRect.width - btnWidth);
-    const y = Math.random() * (containerRect.height - btnHeight);
+    // Keep the No button inside the container, near the text
+    const maxX = container.offsetWidth - noBtn.offsetWidth;
+    const maxY = 60; // vertical movement only small range
+    const minY = 0;
+
+    const x = Math.random() * maxX;
+    const y = minY + Math.random() * maxY;
 
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 }
 
-// Yes button triggers hearts + big message
+// Yes button triggers hearts + message
 yesBtn.addEventListener("click", () => {
     for (let i = 0; i < 30; i++) createHeart();
     message.style.display = "block";
