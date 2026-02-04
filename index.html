@@ -28,7 +28,7 @@ body {
 
 h1 {
     color: #ff4d6d;
-    margin-bottom: 30px;
+    margin-bottom: 60px;
     position: relative;
 }
 
@@ -103,30 +103,33 @@ const message = document.getElementById("message");
 const container = document.querySelector(".container");
 let noClickCount = 0;
 
-// Move No button on hover or click
-noBtn.addEventListener("mouseover", moveNo);
+// No button only reacts on click
 noBtn.addEventListener("click", moveNo);
 
 function moveNo() {
     noClickCount++;
+
+    // Only disappear after 20 clicks
     if (noClickCount >= 20) {
         noBtn.style.display = "none";
         return;
     }
 
-    // Keep the No button inside the container, near the text
+    // Move No button randomly around the top part of the container (near the text)
     const maxX = container.offsetWidth - noBtn.offsetWidth;
-    const maxY = 60; // vertical movement only small range
-    const minY = 0;
+    const minX = 0;
 
-    const x = Math.random() * maxX;
+    const minY = 0;  // near the text
+    const maxY = 60; // small vertical range
+
+    const x = minX + Math.random() * maxX;
     const y = minY + Math.random() * maxY;
 
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 }
 
-// Yes button triggers hearts + message
+// Yes button triggers hearts + big message
 yesBtn.addEventListener("click", () => {
     for (let i = 0; i < 30; i++) createHeart();
     message.style.display = "block";
@@ -145,4 +148,3 @@ function createHeart() {
 
 </body>
 </html>
-        
