@@ -8,22 +8,24 @@
 body {
     height: 100vh;
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     font-family: Arial, sans-serif;
     overflow: hidden;
 }
 
+/* CENTER BOX */
 .container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: white;
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     width: 320px;
     text-align: center;
-    position: relative;
+    z-index: 2;
 }
 
 h1 {
@@ -42,7 +44,6 @@ h1 {
     display: flex;
     justify-content: center;
     gap: 15px;
-    height: 60px;
 }
 
 button {
@@ -58,11 +59,14 @@ button {
     color: white;
 }
 
+/* NO BUTTON — GLOBAL */
 #noBtn {
+    position: absolute;
     background: #ccc;
-    position: absolute; /* IMPORTANT */
+    z-index: 5;
 }
 
+/* HEARTS */
 .heart {
     position: fixed;
     font-size: 28px;
@@ -84,21 +88,26 @@ button {
 
     <div class="buttons">
         <button id="yesBtn">Yes ❤️</button>
-        <button id="noBtn">No 🙃</button>
     </div>
 </div>
+
+<!-- NO BUTTON IS OUTSIDE THE BOX -->
+<button id="noBtn">No 🙃</button>
 
 <script>
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const message = document.getElementById("message");
+const container = document.getElementById("container");
 
 let clicks = 0;
 
-// Place NO initially next to YES
-const yesRect = document.getElementById("yesBtn").getBoundingClientRect();
-noBtn.style.left = yesRect.right + 10 + "px";
-noBtn.style.top = yesRect.top + "px";
+/* Place NO next to YES at start */
+window.onload = () => {
+    const yesRect = yesBtn.getBoundingClientRect();
+    noBtn.style.left = yesRect.right + 10 + "px";
+    noBtn.style.top = yesRect.top + "px";
+};
 
 noBtn.addEventListener("click", () => {
     clicks++;
@@ -108,13 +117,13 @@ noBtn.addEventListener("click", () => {
         return;
     }
 
-    const btnWidth = noBtn.offsetWidth;
-    const btnHeight = noBtn.offsetHeight;
+    const btnW = noBtn.offsetWidth;
+    const btnH = noBtn.offsetHeight;
 
-    const maxX = window.innerWidth - btnWidth - 10;
-    const maxY = window.innerHeight - btnHeight - 10;
+    const maxX = window.innerWidth - btnW;
+    const maxY = window.innerHeight - btnH;
 
-    // FAR random movement but ALWAYS inside screen
+    // RUN FAR — ANYWHERE ON SCREEN
     const x = Math.random() * maxX;
     const y = Math.random() * maxY;
 
